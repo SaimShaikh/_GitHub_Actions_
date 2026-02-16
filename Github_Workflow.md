@@ -108,4 +108,124 @@ jobs:
   - Files from one job are not shared with another job
   - To share data, use artifacts or cache
  
-3.  
+3.  Runner :  A runner is a machine that executes your job in a GitHub workflow.
+
+   - 🔧 Why Do We Need a Runner?
+
+       - Your workflow has jobs
+       - Jobs need a machine to run commands
+       - That machine is the runner
+
+Types of Runner :
+
+1. GitHub-hosted runners are ideal for most users, offering automatic scaling, maintenance, and preconfigured environments.  They are free for public repositories and available with limited minutes for private ones. Larger runners with more CPU, RAM, or GPU support are available for enterprise plans.
+
+## eg
+- runs-on: ubuntu-latest
+- runs-on: windows-latest
+- runs-on: macos-latest
+
+Best for:
+
+- CI pipelines
+
+- Small to medium projects
+
+- Quick setup
+
+2. Self-hosted runners provide greater control over hardware, software, and security.  They are useful when you need specific dependencies, persistent storage, custom configurations, or to run long-running or resource-intensive jobs like end-to-end testing. They are free to use with GitHub Actions, but you are responsible for maintaining the underlying infrastructure.
+
+eg AWS EC2
+- runs-on: self-hosted
+
+
+Best for:
+- Your own machine (VM, server, EC2, laptop)
+
+- You manage OS, tools, security
+
+- More control, more responsibility
+
+4. Steps : GitHub Steps are the individual tasks or commands that make up a job in a GitHub Actions workflow.  Each step runs sequentially within the same job and shares the same runner environment, allowing data to be passed between steps using the filesystem or environment variables. 
+
+## 📍 Where Do Steps Exist?
+
+Steps live inside a job.
+
+```bash
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This is a step"
+```
+
+## What Can a Step Do?
+
+A step can do two main things:
+1️⃣ Run a Command (run)
+
+Executes shell commands.
+
+- run: npm install
+
+2️⃣ Use an Action (uses)
+
+Runs a reusable action (prebuilt logic).
+
+- uses: actions/checkout@v4
+
+  This step:
+
+- Clones your repository
+
+- Saves you from writing Git commands
+
+
+5. Environment Variables : Environment variables are key–value pairs used to store configuration data that your workflow, job, or step can use.
+
+## Levels of ENV
+
+- Workflow-Level env
+
+Available to all jobs and steps in the workflow. Use when the value is common for the whole workflow.
+
+env:
+  APP_ENV: production
+  REGION: ap-south-1
+
+- Job-Level env
+
+Available to all steps inside one job only. Other jobs cannot access this variable.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: development
+
+- Step-Level env
+
+Available to only one specific step. Most restricted scope → safest.
+
+- name: Run tests
+  run: npm test
+  env:
+    NODE_ENV: test
+
+
+6. Secrets : Secrets are encrypted, sensitive values used in workflows, such as passwords, tokens, and keys.
+
+🤔 Why Do We Need Secrets?
+
+- Because you should never hardcode sensitive data in code or YAML files.
+
+- Secrets are used for:
+
+- AWS access keys
+
+- Docker Hub passwords
+
+- API tokens
+
+- Database credentials
