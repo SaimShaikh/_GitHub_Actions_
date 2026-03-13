@@ -199,7 +199,7 @@ jobs:
 
 ```
 
-## Q15. How do you pass a dynamically generated value (like a Semantic Version tag) from one job to a completely different job in the same workflow?
+## Q15. How do you pass a dynamically generated value (like a Semantic Version tag) from one job to a completely different job in the same workflow? or How do you pass data between steps in a job?
 
 to pass a dynamically generated value between jobs, I use job outputs. The first job sets the value using $GITHUB_OUTPUT, and the next job accesses it using needs.<job>.outputs.<name>
 
@@ -279,3 +279,116 @@ the precedence is Step > Job > Workflow. So if NODE_ENV is defined at all three 
 To run a linter without failing the pipeline, I use continue-on-error: true for that step. This allows the workflow to continue even if the linter command returns an error.
 
 ---
+
+## Q20. How do you define a workflow in GitHub Actions?
+
+A workflow in GitHub Actions is defined using a YAML file placed in the .github/workflows/ directory of the repository. The file specifies triggers, jobs, and steps that automate tasks like building, testing, or deploying an application.
+
+---
+
+## Q21. What is a runner and how do you define it? 
+
+A runner is the machine that executes GitHub Actions workflow jobs. It can be GitHub-hosted or self-hosted, and we define it in the workflow using the runs-on field.
+
+---
+
+## Q22. How can you trigger a workflow in response to a pull request or merge request? 
+
+To trigger a workflow for pull requests, we use the pull_request event in the workflow YAML. This allows the pipeline to run automatically when a pull request is opened, updated, or reopened.
+
+---
+
+## Q23. What is the difference between a job and a step?
+
+A job is a set of steps that run on the same runner, while a step is an individual task within that job, such as running a command or executing an action.
+
+---
+
+## Q24. How do you set up environment variables for a workflow? 
+
+In GitHub Actions, environment variables can be defined using the env keyword. They can be set at different levels depending on where we want them to apply.
+
+
+---
+
+## Q25. Where do you store artifacts?
+
+In GitHub Actions, artifacts are stored in GitHub’s artifact storage linked to the workflow run. They are uploaded using actions/upload-artifact and can be downloaded later from the Actions tab or by other jobs in the workflow.
+
+---
+
+## Q26. What measures would you take to improve workflow performance?
+
+To improve workflow performance, I would use dependency caching, run independent jobs in parallel, use matrix strategies efficiently, avoid rebuilding artifacts, trigger workflows only when necessary, and use optimized runners when needed.
+
+
+---
+
+
+## Q27. How can you customize the logging or output of GitHub Action steps?
+
+We can customize logging in GitHub Actions using workflow commands like ::group::, ::warning::, and ::error:: to format logs, and $GITHUB_OUTPUT to pass step outputs. This helps improve log readability and debugging.
+
+
+---
+
+
+## Q28. What are the key component’s of github actions workflow 
+
+
+- The first component is the Workflow itself. A workflow is a YAML file stored in the .github/workflows/ directory and defines the complete automation process.
+
+- The second component is Events. Events are the triggers that start the workflow, such as a push, pull request, schedule, or manual trigger.
+
+- The third component is Jobs. A workflow can contain multiple jobs, and each job runs on a runner and performs a set of tasks.
+
+- The fourth component is Steps. Steps are individual tasks inside a job, like running commands or using actions.
+
+- Another component is Actions. Actions are reusable pieces of code that perform specific tasks, such as checking out the repository or setting up a programming language.
+
+- Then we have Runners, which are the machines that execute the jobs. They can be GitHub-hosted or self-hosted.
+
+- Finally, we also have Environment variables and secrets, which are used to manage configuration values and sensitive information securely.
+
+---
+
+## Q29. How do you trigger workflow 
+
+
+A workflow in GitHub Actions is triggered using events defined with the on keyword, such as push, pull_request, schedule, or workflow_dispatch for manual execution.
+
+---
+
+## Q30. How do you create reusable actions in GitHub Actions?
+
+To create reusable actions in GitHub Actions, we create a custom action with an action.yml file defining inputs and execution steps. Then we reuse that action in workflows using the uses keyword.
+
+
+---
+
+## Q31.What happens if a jobfails? Can others still run?
+
+If a job fails, independent jobs can still run because jobs run in parallel by default. But if another job depends on the failed job using needs, it will be skipped unless we use conditions like if: always().
+
+
+---
+
+
+## Q32. What does continue-on- error: true do in a step?
+
+continue-on-error: true allows a step to fail without causing the entire job or workflow to fail.
+
+Normally, if a step returns a non-zero exit code, the job stops and the workflow is marked as failed. But when we set continue-on-error: true, GitHub Actions will mark that step as failed but still continue executing the remaining steps in the job.
+
+---
+
+
+## Q33. Can you trigger one workflow from another?
+
+Yes, one workflow can trigger another using the workflow_run event. This allows a workflow to start after another workflow completes,
+
+Another way is using workflow_dispatch with the GitHub API to manually trigger another workflow programmatically.
+
+
+---
+
