@@ -48,8 +48,6 @@ OIDC eliminates these risks by using short-lived credentials issued dynamically 
 
 ## OIDC Authentication Workflow
 
-
-
 The authentication process works as follows:
 
 1. **Developer pushes code** to GitHub
@@ -62,3 +60,4 @@ The authentication process works as follows:
 8. **AWS issues** temporary credentials
 9. **Workflow uses** temporary credentials to access AWS services
 
+Practical : https://github.com/SaimShaikh/GitHub_CICD.git
